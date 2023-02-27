@@ -1,7 +1,7 @@
 import random
 
 AantalPersonen = 15
-AantalSpeelDagen = 4
+AantalSpeelDagen = 3
 ##FlightsPerDag = 4
 ## MaximaleFlightGrote = 4
 ## MinimaleFlightGrote = 3
@@ -65,9 +65,12 @@ def KandidaatMinsteDubbels():
             welke=welke + 1
             break
     return result
-                
-    
+                    
+Creteria_0=False
+Creteria_1=False
 
+TestRun=10
+Counter=0
 
 LowestDubbel = 100
 AmountLowestDubbel = 0
@@ -76,6 +79,9 @@ MaxMax = 0
 MinimumGespeeld = 100
 MinMin = 1
 HoeveelGespeeld = 0 
+
+MaxGroteFlight = 0
+MaxAmateurMensenSpelen = 0
 
 weer = True
 while weer:
@@ -108,7 +114,7 @@ while weer:
             for s in range(p):           
                 found=False
                 teller = 0 
-                random.shuffle(PersonenBeschikbaarVandaag)
+#                random.shuffle(PersonenBeschikbaarVandaag)  # This option rand
                 for kandidaat in PersonenBeschikbaarVandaag:
                     if KanDeze(kandidaat,flightnr):
                         FlightIndeling[flightnr]["Personen"].append(PersonenBeschikbaarVandaag.pop(teller))
@@ -130,14 +136,28 @@ while weer:
                     FlightIndeling[flightnr]["Personen"].append(dubbel)
                     PersonenBeschikbaarVandaag.pop(welke)
             flightnr = flightnr + 1   
-    print("AantalDubbel: " + str(AantalDubbel))
-    MinMin=100
-    for x in range(AantalPersonen):
-        print("Persoon ",x," ",Persoon[x]["met_wie_gespeeld"])
-        if len(Persoon[x]["met_wie_gespeeld"]) < MinMin:
-            MinMin = len(Persoon[x]["met_wie_gespeeld"]) 
-    print("Min Min: ",MinMin)
-    if MinMin < 6:
-        weer = True
+    
+    ## KLaar
+    ## First find the optio lowwest dubbels
+    if AantalDubbel < LowestDubbel:
+        LowestDubbel = AantalDubbel
+    if Counter > TestRun:
+        Creteria_0 = True
+#        print("Lowest dubbel", LowestDubbel, Counter)
     else:
-        weer = False
+        Counter = Counter + 1
+    
+    if (Creteria_0 & (AantalDubbel <= LowestDubbel)):
+        LowestDubbel = AantalDubbel
+        if Creteria_1: # twee pro
+            if teller = 0
+            MaxLength=0
+            for x in range(AantalPersonen):
+                if len(Persoon[x]["met_wie_gespeeld"]) >= MaxAmateurMensenSpelen
+                    MaxAmateurMensenSpelen = len(Persoon[x]["met_wie_gespeeld"])
+                
+            if teller >= Hoeveel:
+                for x in range(AantalPersonen):
+                    print(Persoon[x])
+
+
