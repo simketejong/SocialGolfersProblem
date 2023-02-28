@@ -1,13 +1,13 @@
 import random
 
-AantalPersonen = 15
+AantalPersonen = 18
 AantalSpeelDagen = 4
 ##FlightsPerDag = 4
 ## MaximaleFlightGrote = 4
 ## MinimaleFlightGrote = 3
 ## TestRemain = AantalPersonen % MaximaleFlightGrote
 ## TestDevide = TestRemain / MinimaleFlightGrote
-FlightVerdeling=[4,4,4,3] # testing
+FlightVerdeling=[4,4,4,3,3] # testing
 
 
 def AppendFlight():
@@ -27,6 +27,8 @@ def AppendPersoon():
         "met_wie_gespeeld" : [],
         "WelkeFlight" : [],
         "WelkeDag" : [],
+        "WilNiet" : [],
+        "buggy" : False,
         "dubbel" : []
 })
 def AppendDubbel():
@@ -42,6 +44,8 @@ def KanDeze(kandidaat, flightnr):
     for controle in FlightIndeling[flightnr]["Personen"]: # Kijk of kandidaat ooit met een van de andere in flight heb gespeeld
         if kandidaat in Persoon[controle]["met_wie_gespeeld"]:
                     GeefTerug = False
+        if kandidaat in Persoon[controle]["WilNiet"]:
+                    GeefTerug = False
     if GeefTerug: # muteer bij de andere spelers dat zij met kandidaat gespeeld hebben
         for AndereSpeler in FlightIndeling[flightnr]["Personen"]:
             Persoon[AndereSpeler]["met_wie_gespeeld"].append(kandidaat)
@@ -56,6 +60,8 @@ def KandidaatMinsteDubbels():
         for controle in FlightIndeling[flightnr]["Personen"]: # Kijk of kandidaat ooit met een van de andere in flight heb gespeeld
             if check in Persoon[controle]["met_wie_gespeeld"]:
                 DubbeleKandidaat[tel] = DubbeleKandidaat[tel] + 1
+            if check in Persoon[controle]["WilNiet"]:
+                DubbeleKandidaat[tel] = AantalPersonen # dit kan zeker niet
         tel = tel + 1
     minste=min(DubbeleKandidaat)
     welke = 0
@@ -68,8 +74,9 @@ def KandidaatMinsteDubbels():
                     
 Creteria_0=False
 Creteria_1=False
+Pro = True
 
-TestRun=10
+TestRun=10000
 Counter=0
 
 LowestDubbel = 100
@@ -84,6 +91,8 @@ MaxGroteFlight = 0
 MaxAmateurMensenSpelen = 0
 
 weer = True
+
+
 while weer:
     Persoon =[]
     FlightIndeling =[]
@@ -97,6 +106,10 @@ while weer:
         Persoon[x].update({"nummer": x})
         Persoon[x].update({"naam": "persoon_"+str(x)})
         Persoon[x].update({"hcp": random.randint(0, 54)})
+    if Pro:
+        Persoon[0]["WilNiet"].append(1)
+        Persoon[1]["WilNiet"].append(0)
+
     random.shuffle(PersonenBeschikbaar)
     #print(PersonenBeschikbaar) 
     flightnr=0
@@ -116,7 +129,13 @@ while weer:
                 teller = 0 
 #                random.shuffle(PersonenBeschikbaarVandaag)  # This option rand
                 for kandidaat in PersonenBeschikbaarVandaag:
+#                    if (Pro & (flight == 1) & (len(FlightIndeling[flightnr]["Personen"]) == 0)):
+#                        kandidaat = 0
+#                    if (Pro & (flight == 2) & (len(FlightIndeling[flightnr]["Personen"]) == 0)):
+#                        kandidaat = 1
                     if KanDeze(kandidaat,flightnr):
+ #                       WelkeIndex=PersonenBeschikbaarVandaag.index(kandidaat)
+ #                       FlightIndeling[flightnr]["Personen"].append(PersonenBeschikbaarVandaag.pop(WelkeIndex))
                         FlightIndeling[flightnr]["Personen"].append(PersonenBeschikbaarVandaag.pop(teller))
                         Persoon[kandidaat]["WelkeDag"].append(dag)
                         Persoon[kandidaat]["WelkeFlight"].append(flight)
@@ -137,21 +156,24 @@ while weer:
                     PersonenBeschikbaarVandaag.pop(welke)
             flightnr = flightnr + 1   
     
-    ## KLaar
-    ## First find the optio lowwest dubbels
-    if AantalDubbel < LowestDubbel:
-        LowestDubbel = AantalDubbel
     if Counter > TestRun:
         Creteria_0 = True
-#        print("Lowest dubbel", LowestDubbel, Counter)
     else:
+        if AantalDubbel < LowestDubbel:
+            LowestDubbel = AantalDubbel
+        for x in range(AantalPersonen):
+            if (len(Persoon[x]["met_wie_gespeeld"]) >= MaxAmateurMensenSpelen):
+                MaxAmateurMensenSpelen = len(Persoon[x]["met_wie_gespeeld"])
         Counter = Counter + 1
     
-    if Creteria_0:
+    if (Creteria_0 & (AantalDubbel == LowestDubbel) & (len(Persoon[0]["met_wie_gespeeld"]) >= MaxAmateurMensenSpelen) & (len(Persoon[1]["met_wie_gespeeld"]) >= MaxAmateurMensenSpelen)):
+        print("Aantal dubbels", AantalDubbel)
+        print("MaxSpelers", MaxAmateurMensenSpelen)
         for x in range(AantalPersonen):
-            if len(Persoon[x]["met_wie_gespeeld"]) >= MaxAmateurMensenSpelen
-                MaxAmateurMensenSpelen = len(Persoon[x]["met_wie_gespeeld"])
-                for x in range(AantalPersonen):
-                    print(Persoon[x])
+            print(Persoon[x])
+        for x in FlightIndeling:
+            print(x)
+        for x in Dubbel:
+            print(x)   
 
 
