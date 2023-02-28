@@ -1,7 +1,7 @@
 import random
 
 AantalPersonen = 15
-AantalSpeelDagen = 3
+AantalSpeelDagen = 4
 ##FlightsPerDag = 4
 ## MaximaleFlightGrote = 4
 ## MinimaleFlightGrote = 3
@@ -147,16 +147,10 @@ while weer:
     else:
         Counter = Counter + 1
     
-    if (Creteria_0 & (AantalDubbel <= LowestDubbel)):
-        LowestDubbel = AantalDubbel
-        if Creteria_1: # twee pro
-            if teller = 0
-            MaxLength=0
-            for x in range(AantalPersonen):
-                if len(Persoon[x]["met_wie_gespeeld"]) >= MaxAmateurMensenSpelen
-                    MaxAmateurMensenSpelen = len(Persoon[x]["met_wie_gespeeld"])
-                
-            if teller >= Hoeveel:
+    if Creteria_0:
+        for x in range(AantalPersonen):
+            if len(Persoon[x]["met_wie_gespeeld"]) >= MaxAmateurMensenSpelen
+                MaxAmateurMensenSpelen = len(Persoon[x]["met_wie_gespeeld"])
                 for x in range(AantalPersonen):
                     print(Persoon[x])
 
