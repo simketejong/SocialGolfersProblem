@@ -72,7 +72,63 @@ def KandidaatMinsteDubbels():
             welke=welke + 1
             break
     return result
-                    
+def FindPlayers(dag, groep):
+    for d in FlightIndeling:
+        if ((d["Dag"]  == dag) & (d["Flight"]  == groep)):
+            return d["Personen"], d["Grote"]
+def MakeHtml():
+ #   days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
+#    players = ["Player 1", "Player 2", "Player 3", "Player 4", "Player 5", "Player 6", "Player 7", "Player 8", "Player 9", "Player 10", "Player 11", "Player 12", "Player 13", "Player 14", "Player 15", "Player 16"]
+    flight_colors = {
+        1: "#FFDAB9",  # peachpuff
+        2: "#B0E0E6",  # powderblue
+        3: "#90EE90",  # lightgreen
+        4: "#FFB6C1",  # lightpink
+        5: "#3FB3C1",  # 
+}
+
+    # Generate the HTML table
+    html = "<!DOCTYPE html>\n<html>\n<head>\n<meta charset='utf-8'>\n<title>Golf Schedule</title>\n<style>\ntable {\nborder-collapse: collapse;\nmargin: 20px;\n}\nth, td {\npadding: 10px;\ntext-align: center;\nborder: 1px solid black;\n}\n"
+    for flight_num, color in flight_colors.items():
+        html += f".flight{flight_num} {{ background-color: {color}; }}\n"
+    html += "</style>\n</head>\n<body>\n<h1>Golf Schedule</h1>\n<table>\n<thead>\n<tr>\n<th>Day</th>\n"
+    for g in range(len(FlightVerdeling)):
+        g =g + 1
+        html+= "<th>Flight "+str(g)+ "</th>\n"
+    html += "</tr>\n</thead>\n<tbody>\n"
+#        htmp+= "<th>Flight 1</th>\n<th>Flight 2</th>\n<th>Flight 3</th>\n<th>Flight 4</th>\n</tr>\n</thead>\n<tbody>\n"
+#    for day in range(AantalSpeelDagen):
+#        day = day + 1
+#        html += f"<tr>\n<td>{day}</td>\n"
+#        players = FindPlayers(day, 1)
+#        html += f"<td class='flight1'>{players[0][0]}, {players[0][1]}, {players[0][2]}, {players[0][3]}</td>\n"
+#        players = FindPlayers(day, 2)
+#        html += f"<td class='flight2'>{players[0][0]}, {players[0][1]}, {players[0][2]}</td>\n"
+#        players = FindPlayers(day, 3)
+#        html += f"<td class='flight3'>{players[0][0]}, {players[0][1]}, {players[0][2]}</td>\n"
+#        players = FindPlayers(day, 4)
+#        html += f"<td class='flight4'>{players[0][0]}, {players[0][1]}, {players[0][2]}</td>\n"
+#        players = FindPlayers(day, 5)
+#        html += f"<td class='flight5'>{players[0][0]}, {players[0][1]}, {players[0][2]}</td>\n"
+#        html += "</tr>\n"
+
+    for day in range(AantalSpeelDagen):
+        day = day + 1
+        html += f"<tr>\n<td>{day}</td>\n"
+        for r in range(len(FlightVerdeling)):
+            r=r+1
+            players = FindPlayers(day, r)
+            html += f"<td class=\'flight"+str(r)+"'"+">"
+            for s in range(players[1]):
+                html += f"{players[0][s]},"
+            html+= "</td>\n"
+        html += "</tr>\n"
+
+    html += "</tbody>\n</table>\n</body>\n</html>\n"
+    # Write the HTML to a file
+    with open("golf_schedule.html", "w") as f:
+        f.write(html)    
+
 Creteria_0=False
 Creteria_1=False
 Pro = True
@@ -178,5 +234,5 @@ while weer:
                 print(x)
             for x in Dubbel:
                 print(x)   
-
-
+            MakeHtml()            
+            input("Press Enter to continue...")
