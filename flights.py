@@ -138,13 +138,6 @@ def MakeHtml():
 
     html += "</tbody>\n</table>\n</body>\n</html>\n"
 
-#    Persoon = {
- #       'Golfer 1': {'naam': 'Golfer 1', 'met_wie_gespeeld': ['Golfer 2', 'Golfer 3']},
-  #      'Golfer 2': {'naam': 'Golfer 2', 'met_wie_gespeeld': ['Golfer 1', 'Golfer 3']},
-   #     'Golfer 3': {'naam': 'Golfer 3', 'met_wie_gespeeld': ['Golfer 1', 'Golfer 2']},``
-    #    'Golfer 4': {'naam': 'Golfer 4', 'met_wie_gespeeld': ['Golfer 1', 'Golfer 2', 'Golfer 3']}
-    #}
-
     # Create a matrix to store the matches between the golfers
     matrix = [[0 for _ in range(len(Persoon))] for _ in range(len(Persoon))]
 
@@ -155,6 +148,7 @@ def MakeHtml():
         for tegenstander in golfer['met_wie_gespeeld']:
             poep = golfer['met_wie_gespeeld']
             j = tegenstander
+            # TODO : BLock colour of flight and maybe day number / or double 
             matrix[i][j] = matrix[i][j] + 1
             matrix[j][i] = matrix[j][i] + 1
 
