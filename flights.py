@@ -7,6 +7,7 @@ AantalSpeelDagen = 6
 ## MinimaleFlightGrote = 3
 ## TestRemain = AantalPersonen % MaximaleFlightGrote
 ## TestDevide = TestRemain / MinimaleFlightGrote
+# TODO : Make FlightIndeling automatic
 FlightVerdeling=[4,4,4,3,3] # testing
 
 def AppendFlight():
@@ -63,6 +64,7 @@ def KandidaatMinsteDubbels():
                 DubbeleKandidaat[tel] = DubbeleKandidaat[tel] + 1
             if check in Persoon[controle]["WilNiet"]:
                 DubbeleKandidaat[tel] = AantalPersonen # dit kan zeker niet
+    # TODO : Add the possibility "rather not"
         tel = tel + 1
     minste=min(DubbeleKandidaat)
     welke = 0
@@ -128,6 +130,7 @@ def MakeHtml():
                 naam = Persoon[int(players[0][s])]["naam"]
                 bold = Persoon[int(players[0][s])]["buggy"]
                 if bold:
+                    # TODO : Have to test this
                     naam = "<strong>"+naam+"</strong>"
                 html += f"{naam}"+"  "
             html+= "</td>\n"
@@ -166,7 +169,8 @@ def MakeHtml():
         html += '<tr><th>' + Persoon[i]["naam"] + '</th>'
         for j in range(len(Persoon)):
             if matrix[i][j] > 1:
-                html += '<td>X</td>'
+#                html += '<td>X</td>'
+                html += '<td>' + str(matrix[i][j]) + '</td>'
             else:
                 html += '<td></td>'
         html += '</tr>'
@@ -203,7 +207,7 @@ while weer:
     Dubbel=[]
     AantalDubbel=0
     PersonenBeschikbaar=[]
-
+# TODO : This has to be a webpage to enter names / hcp / buggie etc. use database
     for x in range(AantalPersonen):
         PersonenBeschikbaar.append(x)
         AppendPersoon()
@@ -215,10 +219,11 @@ while weer:
         Persoon[1]["WilNiet"].append(0)
     if Buggies:
         Persoon[2].update({"buggy": True})
-        AantalPersonen = AantalPersonen - 1
+        # FIXME : This below doesnt work properly
+        ## AantalPersonen = AantalPersonen - 1
         Persoon[3].update({"buggy": True})
-        AantalPersonen = AantalPersonen - 1
-        FlightVerdeling=[4,3,3,3,3] 
+        ## AantalPersonen = AantalPersonen - 1
+        ## FlightVerdeling=[4,3,3,3,3] 
 
     random.shuffle(PersonenBeschikbaar)
     flightnr=0
@@ -281,5 +286,6 @@ while weer:
                 print(x)
             for x in Dubbel:
                 print(x)   
-            MakeHtml()            
+            MakeHtml()           
+            # TODO : This must be made different, maybe wrte all possibilities to SQL then use flask  
             input("Press Enter to continue...")
