@@ -81,7 +81,7 @@ def KanDeze(kandidaat, flightnr, grote):
             GeefTerug = False
         if kandidaat in Persoon[controle]["WilNiet"]:
             GeefTerug = False
-        if (Persoon[controle]["buggy"]:
+        if (Persoon[controle]["buggy"]):
             if AantalBuggies > 0:
                 GeefTerug = False
             AantalBuggies=AantalBuggies+1
