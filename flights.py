@@ -1,21 +1,71 @@
 import random
+import json
 
-AantalPersonen = 16
-AantalSpeelDagen = 6
+AantalPersonen = 18
+AantalSpeelDagen = 5
 ##FlightsPerDag = 4
 ## MaximaleFlightGrote = 4
 ## MinimaleFlightGrote = 3
 ## TestRemain = AantalPersonen % MaximaleFlightGrote
 ## TestDevide = TestRemain / MinimaleFlightGrote
-# TODO : Make FlightIndeling automatic
 ###FlightVerdeling=[4,4,4,3,3] # testing
 
+def SpelersInvoer():
+# TODO : This has to be a webpage to enter names / hcp / buggie etc. use database    
+#    AantalPersonen = 18
+    for x in range(AantalPersonen):
+        PersonenBeschikbaar.append(x)
+        AppendPersoon()
+        Persoon[x].update({"nummer": x})
+    Persoon[0].update({"naam": "Mathijs"})
+    Persoon[0].update({"hcp": 0})
+    Persoon[1].update({"naam": "Paul"})
+    Persoon[1].update({"hcp": 6})
+    Persoon[2].update({"naam": "Bob/Constance"})
+    Persoon[2].update({"hcp": 40})
+    Persoon[2].update({"buggy": True})        
+    Persoon[3].update({"naam": "Ad/Ans"})
+    Persoon[3].update({"hcp": 40})
+    Persoon[3].update({"buggy": True})        
+    Persoon[4].update({"naam": "Simke"})
+    Persoon[4].update({"hcp": 13})
+    Persoon[5].update({"naam": "Jacqie"})
+    Persoon[5].update({"hcp": 10})
+    Persoon[6].update({"naam": "Annemieke"})
+    Persoon[6].update({"hcp": 6})
+    Persoon[7].update({"naam": "Wil"})
+    Persoon[7].update({"hcp": 30})
+    Persoon[8].update({"naam": "Jose"})
+    Persoon[8].update({"hcp": 30})
+    Persoon[9].update({"naam": "Henk"})
+    Persoon[9].update({"hcp": 30})
+    Persoon[10].update({"naam": "Annemiek"})
+    Persoon[10].update({"hcp": 30})
+    Persoon[11].update({"naam": "Rene"})
+    Persoon[11].update({"hcp": 30})
+    Persoon[12].update({"naam": "Marie Jose"})
+    Persoon[12].update({"hcp": 30})
+    Persoon[13].update({"naam": "Jan Willem"})
+    Persoon[13].update({"hcp": 30})
+    Persoon[14].update({"naam": "Marga"})
+    Persoon[14].update({"hcp": 30})
+    Persoon[15].update({"naam": "Bart"})
+    Persoon[15].update({"hcp": 30})
+    if Pro:
+        Persoon[0]["WilNiet"].append(1)
+        Persoon[1]["WilNiet"].append(0)
 def SuggestFlightVerdeling(x):
     # Initialize the list of valid permutations to empty
     AantalBuggies=0
+    global AantalPersonen
     if Buggies:
         for x in range(AantalPersonen):
+            if x == AantalPersonen:
+                break
             if Persoon[x]["buggy"]:
+                AantalPersonen = AantalPersonen - 1
+                Persoon.pop()
+                PersonenBeschikbaar.pop()
                 AantalBuggies = AantalBuggies + 1
     permutations = {}
     def generate_permutations(current_permutation, remaining_sum):
@@ -77,6 +127,8 @@ def KanDeze(kandidaat, flightnr, grote):
         AantalBuggies=AantalBuggies+1
     if kandidaat in FlightIndeling[flightnr]["Personen"]: # Deze zou al in flight zijn
         print("Moet niet kunnen ",kandidaat, flightnr)
+        GeefTerug = False
+    if ((Persoon[kandidaat]["buggy"]) & (grote == 4)):
         GeefTerug = False
     for controle in FlightIndeling[flightnr]["Personen"]: # Kijk of kandidaat ooit met een van de andere in flight heb gespeeld
         if kandidaat in Persoon[controle]["met_wie_gespeeld"]:
@@ -169,9 +221,8 @@ def MakeHtml():
                 naam = Persoon[int(players[0][s])]["naam"]
                 bold = Persoon[int(players[0][s])]["buggy"]
                 if bold:
-                    # TODO : Have to test this
                     naam = "<strong>"+naam+"</strong>"
-                html += f"{naam}"+"  "
+                html += f"{naam}"+" || "
             html+= "</td>\n"
         html += "</tr>\n"
 
@@ -219,9 +270,12 @@ Pro = True
 Buggies = True
 MaxFlight = 4
 MinFlight = 3
+FlightVerdeling= []
 
-TestRun=100
+TestRun=1000
 Counter=0
+HoeveelFlights = 1000
+optellen=0
 
 LowestDubbel = 100
 AmountLowestDubbel = 0
@@ -236,31 +290,21 @@ MaxAmateurMensenSpelen = 0
 
 weer = True
 
+#PersonenBeschikbaar=[]
+#Persoon =[]
+#SpelersInvoer()
+
 while weer:
-    Persoon =[]
     FlightIndeling =[]
     Dubbel=[]
     AantalDubbel=0
-    PersonenBeschikbaar=[]
-# TODO : This has to be a webpage to enter names / hcp / buggie etc. use database
-    for x in range(AantalPersonen):
-        PersonenBeschikbaar.append(x)
-        AppendPersoon()
-        Persoon[x].update({"nummer": x})
-        Persoon[x].update({"naam": "persoon_"+str(x)})
-        Persoon[x].update({"hcp": random.randint(0, 54)})
-    if Pro:
-        Persoon[0]["WilNiet"].append(1)
-        Persoon[1]["WilNiet"].append(0)
-    if Buggies:
-        Persoon[2].update({"buggy": True})
-        # FIXME : This below doesnt work properly
-        ## AantalPersonen = AantalPersonen - 1
-        Persoon[3].update({"buggy": True})
-        ## AantalPersonen = AantalPersonen - 1
-        ## FlightVerdeling=[4,3,3,3,3] 
 
-    FlightVerdeling = SuggestFlightVerdeling(AantalPersonen)
+    PersonenBeschikbaar=[]
+    Persoon =[]
+    SpelersInvoer()
+
+    if len(FlightVerdeling) == 0:
+        FlightVerdeling = SuggestFlightVerdeling(AantalPersonen)
 
     random.shuffle(PersonenBeschikbaar)
     flightnr=0
@@ -326,3 +370,9 @@ while weer:
             MakeHtml()           
             # TODO : This must be made different, maybe wrte all possibilities to SQL then use flask  
             input("Press Enter to continue...")
+            if optellen < HoeveelFlights:
+                optellen = optellen + 1
+                with open('flights.json', 'a') as fp:
+                    json.dump(FlightIndeling, fp)
+            else:
+                break
