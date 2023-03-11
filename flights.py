@@ -73,6 +73,8 @@ def AppendDubbel():
 def KanDeze(kandidaat, flightnr, grote):
     GeefTerug = True
     AantalBuggies=0
+    if (Persoon[kandidaat]["buggy"]):
+        AantalBuggies=AantalBuggies+1
     if kandidaat in FlightIndeling[flightnr]["Personen"]: # Deze zou al in flight zijn
         print("Moet niet kunnen ",kandidaat, flightnr)
         GeefTerug = False
