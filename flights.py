@@ -1,6 +1,6 @@
 import random
 
-AantalPersonen = 18
+AantalPersonen = 16
 AantalSpeelDagen = 6
 ##FlightsPerDag = 4
 ## MaximaleFlightGrote = 4
@@ -8,8 +8,41 @@ AantalSpeelDagen = 6
 ## TestRemain = AantalPersonen % MaximaleFlightGrote
 ## TestDevide = TestRemain / MinimaleFlightGrote
 # TODO : Make FlightIndeling automatic
-FlightVerdeling=[4,4,4,3,3] # testing
+###FlightVerdeling=[4,4,4,3,3] # testing
 
+def SuggestFlightVerdeling(x):
+    # Initialize the list of valid permutations to empty
+    AantalBuggies=0
+    if Buggies:
+        for x in range(AantalPersonen):
+            if Persoon[x]["buggy"]:
+                AantalBuggies = AantalBuggies + 1
+    permutations = {}
+    def generate_permutations(current_permutation, remaining_sum):
+        if remaining_sum == 0:
+            if x in permutations:
+                permutations[x].append(current_permutation)
+            else:
+                permutations[x] = [current_permutation]
+        elif remaining_sum > 0:
+            generate_permutations(current_permutation + [3], remaining_sum - 3)
+            generate_permutations(current_permutation + [4], remaining_sum - 4)
+
+    generate_permutations([], x)
+
+    test = permutations[next(iter(permutations))]
+    if AantalBuggies:
+        tel = 0
+        for OneArray in test:
+            tel = 0
+            for d in range(len(OneArray)):
+                if OneArray[d] == 3:
+                    tel = tel + 1
+            if tel >= AantalBuggies:
+                return OneArray
+                break
+    else:            
+        return test[-1]
 def AppendFlight():
     FlightIndeling.append({
         "flightnr" : 0,
@@ -28,6 +61,7 @@ def AppendPersoon():
         "WelkeFlight" : [],
         "WelkeDag" : [],
         "WilNiet" : [],
+        "MoetSamen" : [],
         "buggy" : False,
         "dubbel" : []
 })
@@ -38,6 +72,7 @@ def AppendDubbel():
     })
 def KanDeze(kandidaat, flightnr, grote):
     GeefTerug = True
+    AantalBuggies=0
     if kandidaat in FlightIndeling[flightnr]["Personen"]: # Deze zou al in flight zijn
         print("Moet niet kunnen ",kandidaat, flightnr)
         GeefTerug = False
@@ -46,6 +81,10 @@ def KanDeze(kandidaat, flightnr, grote):
             GeefTerug = False
         if kandidaat in Persoon[controle]["WilNiet"]:
             GeefTerug = False
+        if (Persoon[controle]["buggy"]:
+            if AantalBuggies > 0:
+                GeefTerug = False
+            AantalBuggies=AantalBuggies+1
         if ((Persoon[controle]["buggy"]) & (grote == 4)):
             GeefTerug = False
     if GeefTerug: # muteer bij de andere spelers dat zij met kandidaat gespeeld hebben
@@ -79,8 +118,6 @@ def FindPlayers(dag, groep):
         if ((d["Dag"]  == dag) & (d["Flight"]  == groep)):
             return d["Personen"], d["Grote"]
 def MakeHtml():
- #   days = ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"]
-#    players = ["Player 1", "Player 2", "Player 3", "Player 4", "Player 5", "Player 6", "Player 7", "Player 8", "Player 9", "Player 10", "Player 11", "Player 12", "Player 13", "Player 14", "Player 15", "Player 16"]
     flight_colors = {
         1: "#FFDAB9",  # peachpuff
         2: "#B0E0E6",  # powderblue
@@ -177,9 +214,11 @@ def MakeHtml():
 Creteria_0=False
 Creteria_1=False
 Pro = True
-Buggies = False
+Buggies = True
+MaxFlight = 4
+MinFlight = 3
 
-TestRun=1000
+TestRun=100
 Counter=0
 
 LowestDubbel = 100
@@ -218,6 +257,8 @@ while weer:
         Persoon[3].update({"buggy": True})
         ## AantalPersonen = AantalPersonen - 1
         ## FlightVerdeling=[4,3,3,3,3] 
+
+    FlightVerdeling = SuggestFlightVerdeling(AantalPersonen)
 
     random.shuffle(PersonenBeschikbaar)
     flightnr=0

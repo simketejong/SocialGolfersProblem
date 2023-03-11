@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Golfers</title>
+</head>
+<body>
+    <h1>Golfers</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Handicap</th>
+                <th>Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for golfer in golfers %}
+            <tr>
+                <td>{{ golfer[0] }}</td>
+                <td>{{ golfer[1] }}</td>
+                <td>{{ golfer[2] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Add Golfer</h2>
+
+    <form method="post">
+        <label for="name">Name:</label>
+        <input type="text" name="name" required><br>
+
+        <label for="handicap">Handicap:</label>
+        <input type="number" name="handicap" step="0.1" required><br>
+
+        <label for="email">Email:</label>
+        <input type="email" name="email" required><br>
+
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
