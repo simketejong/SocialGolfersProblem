@@ -54,6 +54,16 @@ def SpelersInvoer():
     if Pro:
         Persoon[0]["WilNiet"].append(1)
         Persoon[1]["WilNiet"].append(0)
+        Persoon[6]["WilNiet"].append(1)        
+        Persoon[6]["WilNiet"].append(0)                
+        Persoon[0]["WilNiet"].append(6)        
+        Persoon[1]["WilNiet"].append(6)                
+        Persoon[2]["WilNiet"].append(0)        
+        Persoon[0]["WilNiet"].append(2)                
+        Persoon[2]["WilNiet"].append(1)                
+        Persoon[1]["WilNiet"].append(2)                
+
+
 def SuggestFlightVerdeling(x):
     # Initialize the list of valid permutations to empty
     AantalBuggies=0
@@ -157,6 +167,9 @@ def KandidaatMinsteDubbels():
                 DubbeleKandidaat[tel] = DubbeleKandidaat[tel] + 1
             if check in Persoon[controle]["WilNiet"]:
                 DubbeleKandidaat[tel] = AantalPersonen # dit kan zeker niet
+            if (Persoon[controle]["buggy"]):
+                DubbeleKandidaat[tel] = AantalPersonen # dit kan zeker niet
+
     # TODO : Add the possibility "rather not"
         tel = tel + 1
     minste=min(DubbeleKandidaat)
@@ -185,25 +198,25 @@ def MakeHtml():
     html = "<!DOCTYPE html>\n<html>\n<head>\n<meta charset='utf-8'>\n<title>Golf Schedule</title>\n<style>\ntable {\nborder-collapse: collapse;\nmargin: 20px;\n}\nth, td {\npadding: 10px;\ntext-align: center;\nborder: 1px solid black;\n}\n"
     for flight_num, color in flight_colors.items():
         html += f".flight{flight_num} {{ background-color: {color}; }}\n"
-    html += "</style>\n</head>\n<body>\n<h1>Golf Schedule</h1>\n<table>\n<thead>\n<tr>\n<th>Day</th>\n"
-    for g in range(len(FlightVerdeling)):
-        g =g + 1
-        html+= "<th>Flight "+str(g)+ "</th>\n"
-    html += "</tr>\n</thead>\n<tbody>\n"
+#    html += "</style>\n</head>\n<body>\n<h1>Golf Schedule</h1>\n<table>\n<thead>\n<tr>\n<th>Day</th>\n"
+ #   for g in range(len(FlightVerdeling)):
+  #      g =g + 1
+   #     html+= "<th>Flight "+str(g)+ "</th>\n"
+#    html += "</tr>\n</thead>\n<tbody>\n"
 
-    for day in range(AantalSpeelDagen):
-        day = day + 1
-        html += f"<tr>\n<td>{day}</td>\n"
-        for r in range(len(FlightVerdeling)):
-            r=r+1
-            players = FindPlayers(day, r)
-            html += f"<td class=\'flight"+str(r)+"'"+">"
-            for s in range(players[1]):
-                html += f"{players[0][s]},"
-            html+= "</td>\n"
-        html += "</tr>\n"
-    html += "</tbody>\n</table>\n</body>\n</html>\n"
-    html+= "<p>"
+#    for day in range(AantalSpeelDagen):
+ #       day = day + 1
+  #      html += f"<tr>\n<td>{day}</td>\n"
+   #     for r in range(len(FlightVerdeling)):
+    #        r=r+1
+     #       players = FindPlayers(day, r)
+      #      html += f"<td class=\'flight"+str(r)+"'"+">"
+       #     for s in range(players[1]):
+        #        html += f"{players[0][s]},"
+         #   html+= "</td>\n"
+#        html += "</tr>\n"
+ #   html += "</tbody>\n</table>\n</body>\n</html>\n"
+  #  html+= "<p>"
     
     html += "</style>\n</head>\n<body>\n<h1>Golf Schedule</h1>\n<table>\n<thead>\n<tr>\n<th>Day</th>\n"
     for g in range(len(FlightVerdeling)):
@@ -252,7 +265,7 @@ def MakeHtml():
     for i in range(len(Persoon)):
         html += '<tr><th>' + Persoon[i]["naam"] + '</th>'
         for j in range(len(Persoon)):
-            if matrix[i][j] > 1:
+            if matrix[i][j] > 0:
 #                html += '<td>X</td>'
                 html += '<td>' + str(matrix[i][j]) + '</td>'
             else:
@@ -272,7 +285,7 @@ MaxFlight = 4
 MinFlight = 3
 FlightVerdeling= []
 
-TestRun=1000
+TestRun=100
 Counter=0
 HoeveelFlights = 1000
 optellen=0
